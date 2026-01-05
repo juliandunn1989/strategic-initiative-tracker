@@ -130,7 +130,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
     }
   }
 
-  async function handleSave(e: React.MouseEvent) {
+  async function handleSaveNew(e: React.MouseEvent) {
     e.stopPropagation()
     setSaving(true)
 
@@ -180,8 +180,65 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
 
       if (onUpdate) onUpdate()
     } catch (error) {
-      console.error('Error saving update:', error)
-      alert('Error saving update. Please try again.')
+      console.error('Error saving new update:', error)
+      alert('Error saving new update. Please try again.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function handleEditCurrent(e: React.MouseEvent) {
+    e.stopPropagation()
+    if (!latestUpdate) return
+
+    setSaving(true)
+
+    try {
+      // Update existing update
+      const { error: updateError } = await supabase
+        .from('updates')
+        .update({
+          confidence_plan: confidencePlan,
+          confidence_alignment: confidenceAlignment,
+          confidence_execution: confidenceExecution,
+          confidence_outcomes: confidenceOutcomes,
+          status_mood: statusMood,
+          latest_status: latestStatus,
+          biggest_risk_worry: biggestRiskWorry,
+          dept_product_aligned: deptProduct,
+          dept_tech_aligned: deptTech,
+          dept_marketing_aligned: deptMarketing,
+          dept_client_success_aligned: deptClientSuccess,
+          dept_commercial_aligned: deptCommercial,
+        })
+        .eq('id', latestUpdate.id)
+
+      if (updateError) throw updateError
+
+      // Delete existing tasks for this update
+      await supabase.from('tasks').delete().eq('update_id', latestUpdate.id)
+
+      // Insert updated tasks
+      if (tasks.length > 0) {
+        const tasksToInsert = tasks.map((task, index) => ({
+          update_id: latestUpdate.id,
+          task_text: task.task_text,
+          is_completed: task.is_completed,
+          display_order: index,
+          due_date: task.due_date,
+        }))
+
+        await supabase.from('tasks').insert(tasksToInsert)
+      }
+
+      // Refresh data
+      await fetchLatestUpdate()
+      await fetchAllUpdates()
+
+      if (onUpdate) onUpdate()
+    } catch (error) {
+      console.error('Error editing current update:', error)
+      alert('Error editing current update. Please try again.')
     } finally {
       setSaving(false)
     }
@@ -431,19 +488,38 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
             </div>
           </div>
 
-          {/* Save Button */}
+          {/* Action Buttons */}
           <div className="p-6 bg-white">
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="w-full text-white py-4 px-6 rounded-xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-bold transition-all duration-200 text-lg"
-              style={{
-                background: saving ? '#DDDDDD' : 'linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%)',
-                boxShadow: saving ? 'none' : '0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1)'
-              }}
-            >
-              {saving ? 'Saving...' : 'Save Changes'}
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={handleSaveNew}
+                disabled={saving}
+                className="flex-1 text-white py-4 px-6 rounded-xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-bold transition-all duration-200 text-lg"
+                style={{
+                  background: saving ? '#DDDDDD' : 'linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%)',
+                  boxShadow: saving ? 'none' : '0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1)'
+                }}
+              >
+                {saving ? 'Saving...' : 'Save New Update'}
+              </button>
+              {latestUpdate && (
+                <button
+                  onClick={handleEditCurrent}
+                  disabled={saving}
+                  className="flex-1 bg-gray-600 text-white py-4 px-6 rounded-xl hover:bg-gray-700 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-bold transition-all duration-200 text-lg"
+                  style={{
+                    boxShadow: saving ? 'none' : '0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1)'
+                  }}
+                >
+                  Edit Current
+                </button>
+              )}
+            </div>
+            {latestUpdate && (
+              <p className="text-xs text-gray-500 mt-2 text-center">
+                Use "Edit Current" to fix typos or "Save New Update" to create a new entry
+              </p>
+            )}
           </div>
 
           {/* Timeline */}
