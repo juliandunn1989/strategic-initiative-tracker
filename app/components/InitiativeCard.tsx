@@ -326,8 +326,8 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                 const daysText = formatWorkingDaysUntil(nearestTask.due_date)
 
                 return (
-                  <div className="mb-4 text-sm font-medium text-gray-700">
-                    📅 Next deadline: <span className="text-pink-600">{daysText}</span>
+                  <div className="mb-4 text-sm text-gray-700">
+                    <span className="font-medium">📅 Next:</span> {nearestTask.task_text} <span className="text-pink-600 font-semibold">({daysText})</span>
                   </div>
                 )
               }
