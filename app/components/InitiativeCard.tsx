@@ -158,9 +158,10 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
 
       if (updateError) throw updateError
 
-      // Save tasks
-      if (tasks.length > 0) {
-        const tasksToInsert = tasks.map((task, index) => ({
+      // Save tasks (filter out empty tasks)
+      const validTasks = tasks.filter(task => task.task_text.trim() !== '')
+      if (validTasks.length > 0) {
+        const tasksToInsert = validTasks.map((task, index) => ({
           update_id: newUpdate.id,
           task_text: task.task_text,
           is_completed: task.is_completed,
@@ -168,7 +169,11 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
           due_date: task.due_date,
         }))
 
-        await supabase.from('tasks').insert(tasksToInsert)
+        const { error: tasksError } = await supabase.from('tasks').insert(tasksToInsert)
+        if (tasksError) {
+          console.error('Error inserting tasks:', tasksError)
+          throw tasksError
+        }
       }
 
       // Refresh data
@@ -218,9 +223,10 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
       // Delete existing tasks for this update
       await supabase.from('tasks').delete().eq('update_id', latestUpdate.id)
 
-      // Insert updated tasks
-      if (tasks.length > 0) {
-        const tasksToInsert = tasks.map((task, index) => ({
+      // Insert updated tasks (filter out empty tasks)
+      const validTasks = tasks.filter(task => task.task_text.trim() !== '')
+      if (validTasks.length > 0) {
+        const tasksToInsert = validTasks.map((task, index) => ({
           update_id: latestUpdate.id,
           task_text: task.task_text,
           is_completed: task.is_completed,
@@ -228,7 +234,11 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
           due_date: task.due_date,
         }))
 
-        await supabase.from('tasks').insert(tasksToInsert)
+        const { error: tasksError } = await supabase.from('tasks').insert(tasksToInsert)
+        if (tasksError) {
+          console.error('Error inserting tasks:', tasksError)
+          throw tasksError
+        }
       }
 
       // Refresh data
