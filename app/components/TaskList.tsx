@@ -34,7 +34,7 @@ export default function TaskList({ tasks, onTasksChange, editable = false }: Tas
 
   const handleDateChange = (index: number, date: string) => {
     const newTasks = [...tasks]
-    newTasks[index].due_date = date
+    newTasks[index].due_date = date || null
     onTasksChange(newTasks)
   }
 
@@ -46,7 +46,7 @@ export default function TaskList({ tasks, onTasksChange, editable = false }: Tas
   return (
     <div className="space-y-2">
       {tasks.map((task, index) => (
-        <div key={task.id || index} className="flex gap-2 items-start">
+        <div key={task.id || index} className="flex gap-2 items-center">
           <input
             type="checkbox"
             checked={task.is_completed}
@@ -54,11 +54,11 @@ export default function TaskList({ tasks, onTasksChange, editable = false }: Tas
               e.stopPropagation()
               handleToggleComplete(index)
             }}
-            className="mt-1.5 w-4 h-4 text-blue-600 rounded cursor-pointer"
+            className="w-4 h-4 text-blue-600 rounded cursor-pointer flex-shrink-0"
             disabled={!editable}
           />
-          <div className="flex-1 space-y-1">
-            {editable ? (
+          {editable ? (
+            <>
               <input
                 type="text"
                 value={task.task_text}
@@ -69,20 +69,10 @@ export default function TaskList({ tasks, onTasksChange, editable = false }: Tas
                 onClick={(e) => e.stopPropagation()}
                 placeholder="Enter task..."
                 disabled={task.is_completed}
-                className={`w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm ${
+                className={`flex-1 px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm ${
                   task.is_completed ? 'line-through text-gray-400 bg-gray-50' : ''
                 }`}
               />
-            ) : (
-              <span
-                className={`block text-sm ${
-                  task.is_completed ? 'line-through text-gray-400' : 'text-gray-700'
-                }`}
-              >
-                {task.task_text}
-              </span>
-            )}
-            {editable && (
               <input
                 type="date"
                 value={task.due_date || ''}
@@ -92,26 +82,34 @@ export default function TaskList({ tasks, onTasksChange, editable = false }: Tas
                 }}
                 onClick={(e) => e.stopPropagation()}
                 disabled={task.is_completed}
-                className="w-full px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+                className="w-36 px-2 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs flex-shrink-0"
               />
-            )}
-            {!editable && task.due_date && (
-              <span className="text-xs text-gray-500">
-                Due: {new Date(task.due_date).toLocaleDateString()}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleRemoveTask(index)
+                }}
+                className="text-red-500 hover:text-red-700 text-lg flex-shrink-0"
+              >
+                ✕
+              </button>
+            </>
+          ) : (
+            <div className="flex-1 flex items-center justify-between">
+              <span
+                className={`text-sm ${
+                  task.is_completed ? 'line-through text-gray-400' : 'text-gray-700'
+                }`}
+              >
+                {task.task_text}
               </span>
-            )}
-          </div>
-          {editable && (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation()
-                handleRemoveTask(index)
-              }}
-              className="text-red-500 hover:text-red-700 text-lg"
-            >
-              ✕
-            </button>
+              {task.due_date && (
+                <span className="text-xs text-gray-500 font-medium ml-2 flex-shrink-0">
+                  {new Date(task.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                </span>
+              )}
+            </div>
           )}
         </div>
       ))}
