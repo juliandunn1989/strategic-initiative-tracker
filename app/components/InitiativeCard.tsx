@@ -476,35 +476,6 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
             </div>
           </div>
 
-          {/* Department Alignment */}
-          <div className="p-6 bg-white border-b border-gray-200">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Department Alignment Status</h3>
-            <p className="text-sm text-gray-600 mb-4">Are they aligned to recent developments?</p>
-            <div className="space-y-2">
-              {[
-                { label: 'Product', value: deptProduct, setter: setDeptProduct },
-                { label: 'Tech/Engineering', value: deptTech, setter: setDeptTech },
-                { label: 'Marketing', value: deptMarketing, setter: setDeptMarketing },
-                { label: 'Client Success', value: deptClientSuccess, setter: setDeptClientSuccess },
-                { label: 'Commercial', value: deptCommercial, setter: setDeptCommercial },
-              ].map((dept) => (
-                <label key={dept.label} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={dept.value}
-                    onChange={(e) => {
-                      e.stopPropagation()
-                      dept.setter(e.target.checked)
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                    className="w-4 h-4 text-blue-600 rounded"
-                  />
-                  <span className="text-sm text-gray-700">{dept.label}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
           {/* Action Buttons */}
           <div className="p-6 bg-white">
             <div className="flex gap-3">

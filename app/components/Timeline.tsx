@@ -55,27 +55,6 @@ export default function Timeline({ updates }: TimelineProps) {
               <p className="text-sm text-gray-600">{update.biggest_risk_worry}</p>
             </div>
           )}
-
-          {/* Department Alignment */}
-          <div className="flex flex-wrap gap-2 text-xs">
-            {update.dept_product_aligned && (
-              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">Product ✓</span>
-            )}
-            {update.dept_tech_aligned && (
-              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">Tech ✓</span>
-            )}
-            {update.dept_marketing_aligned && (
-              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">Marketing ✓</span>
-            )}
-            {update.dept_client_success_aligned && (
-              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                Client Success ✓
-              </span>
-            )}
-            {update.dept_commercial_aligned && (
-              <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded">Commercial ✓</span>
-            )}
-          </div>
         </div>
       ))}
 
