@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Initiative Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .confidence-badge {
+            transition: all 0.2s;
+        }
+        .card {
+            transition: all 0.3s ease;
+        }
+        .timeline-entry {
+            border-left: 3px solid #e5e7eb;
+        }
+        .timeline-entry:hover {
+            border-left-color: #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Strategic Initiative Tracker</h1>
+            <p class="text-gray-600 mt-2">Last synced: Just now</p>
+        </div>
+
+        <!-- Initiative Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            <!-- Shop Initiative -->
+            <div class="card bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg" onclick="toggleCard('shop')">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900">Shop</h2>
+                        <p class="text-sm text-gray-500">Updated 1 day ago</p>
+                    </div>
+                    <svg id="shop-chevron" class="w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+                <div class="flex gap-1.5 mb-3">
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Plan</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Alignment</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Execution</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">Outcomes</span>
+                </div>
+                <div class="mb-3">
+                    <div class="flex items-start gap-2 mb-2">
+                        <span class="text-lg">⚠️</span>
+                        <p class="text-sm text-amber-700">Card add rate dropped to 49% impacting activation targets. Tech investigating session bug. E2A delayed by 1 week.</p>
+                    </div>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <div class="flex items-start gap-1.5">
+                            <input type="checkbox" class="mt-0.5 w-3 h-3 text-blue-600 rounded" disabled>
+                            <span>Fix session bug in production</span>
+                        </div>
+                        <div class="flex items-start gap-1.5">
+                            <input type="checkbox" class="mt-0.5 w-3 h-3 text-blue-600 rounded" disabled>
+                            <span>Align Marketing + Client Success on launch messaging</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Expanded Content -->
+                <div id="shop-expanded" class="hidden mt-6 pt-6 border-t border-gray-200">
+                    
+                    <!-- Confidence Breakdown -->
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Confidence Breakdown</h3>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🎯 Plan Creation</span>
+                                <select class="px-3 py-1.5 text-xs font-medium border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="poor">Poor</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="good" selected>Good</option>
+                                    <option value="excellent">Excellent</option>
+                                </select>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🤝 Alignment to Plan</span>
+                                <select class="px-3 py-1.5 text-xs font-medium border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="poor">Poor</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="good">Good</option>
+                                    <option value="excellent">Excellent</option>
+                                </select>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🚀 Execution of Plan</span>
+                                <select class="px-3 py-1.5 text-xs font-medium border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="poor">Poor</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="good">Good</option>
+                                    <option value="excellent">Excellent</option>
+                                </select>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">📊 Performance vs Outcomes</span>
+                                <select class="px-3 py-1.5 text-xs font-medium border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <option value="na">N/A</option>
+                                    <option value="poor" selected>Poor</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="good">Good</option>
+                                    <option value="excellent">Excellent</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Current State -->
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Current State</h3>
+                        <div class="space-y-4 text-sm">
+                            <div>
+                                <label class="block font-medium text-gray-700 mb-2">Latest Status</label>
+                                <div class="flex gap-2 mb-2">
+                                    <label class="text-2xl cursor-pointer hover:scale-110 transition-transform" title="Great">
+                                        <input type="radio" name="shop-status-emoji" value="great" class="hidden">
+                                        <span>🎉</span>
+                                    </label>
+                                    <label class="text-2xl cursor-pointer hover:scale-110 transition-transform" title="Good">
+                                        <input type="radio" name="shop-status-emoji" value="good" class="hidden">
+                                        <span>😊</span>
+                                    </label>
+                                    <label class="text-2xl cursor-pointer hover:scale-110 transition-transform" title="Neutral">
+                                        <input type="radio" name="shop-status-emoji" value="neutral" class="hidden">
+                                        <span>😐</span>
+                                    </label>
+                                    <label class="text-2xl cursor-pointer hover:scale-110 transition-transform" title="Concerned">
+                                        <input type="radio" name="shop-status-emoji" value="concerned" class="hidden">
+                                        <span>😟</span>
+                                    </label>
+                                    <label class="text-2xl cursor-pointer hover:scale-110 transition-transform opacity-100" title="Warning">
+                                        <input type="radio" name="shop-status-emoji" value="warning" class="hidden" checked>
+                                        <span>⚠️</span>
+                                    </label>
+                                </div>
+                                <textarea rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="Describe the current status...">Card add rate dropped to 49% impacting activation targets. Tech investigating session bug. E2A delayed by 1 week.</textarea>
+                            </div>
+                            <div>
+                                <label class="block font-medium text-gray-700 mb-2">This Week's Tasks</label>
+                                <div id="shop-task-list" class="space-y-2 mb-2">
+                                    <div class="flex gap-2 items-start">
+                                        <input type="checkbox" class="mt-1.5 w-4 h-4 text-blue-600 rounded">
+                                        <input type="text" value="Fix session bug in production" class="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                        <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 text-lg">✕</button>
+                                    </div>
+                                    <div class="flex gap-2 items-start">
+                                        <input type="checkbox" class="mt-1.5 w-4 h-4 text-blue-600 rounded">
+                                        <input type="text" value="Align Marketing + Client Success on launch messaging" class="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                        <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 text-lg">✕</button>
+                                    </div>
+                                    <div class="flex gap-2 items-start">
+                                        <input type="checkbox" class="mt-1.5 w-4 h-4 text-blue-600 rounded">
+                                        <input type="text" value="Confirm retailer onboarding capacity with Commercial" class="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                        <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 text-lg">✕</button>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="addTaskInline('shop')" class="text-sm text-blue-600 hover:text-blue-700 font-medium">+ Add Task</button>
+                            </div>
+                            <div>
+                                <label class="block font-medium text-gray-700 mb-2">Biggest Risk/Worry</label>
+                                <textarea rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="What's the main concern or risk?">Session management bug causing card add failures</textarea>
+                            </div>
+                            <div>
+                                <label class="block font-medium text-gray-700 mb-2">Upcoming Milestones</label>
+                                <div id="shop-milestone-list" class="space-y-2 mb-2">
+                                    <div class="flex gap-2 items-start">
+                                        <input type="text" value="Beta launch with 50 retailers" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="Milestone name...">
+                                        <input type="date" value="2026-03-15" class="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                        <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 text-lg">✕</button>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="addMilestoneInline('shop')" class="text-sm text-blue-600 hover:text-blue-700 font-medium">+ Add Milestone</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Department Alignment -->
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Department Alignment Status</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Product</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Tech/Engineering</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Marketing</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Client Success</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Commercial</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Save Button -->
+                    <div class="mb-6">
+                        <button onclick="saveUpdate('shop')" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                            Save Changes
+                        </button>
+                    </div>
+
+                    <!-- Timeline -->
+                    <div class="mb-4">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Update Timeline</h3>
+                        <div id="shop-timeline" class="space-y-4">
+                            <div class="timeline-entry pl-4 pb-4">
+                                <p class="text-xs text-gray-500 mb-2">Jan 4, 2026 - 2 days ago</p>
+                                <div class="flex gap-2 mb-2">
+                                    <span class="px-2 py-0.5 rounded text-xs bg-green-100 text-green-800">Plan</span>
+                                    <span class="px-2 py-0.5 rounded text-xs bg-yellow-100 text-yellow-800">Alignment</span>
+                                    <span class="px-2 py-0.5 rounded text-xs bg-yellow-100 text-yellow-800">Execution</span>
+                                    <span class="px-2 py-0.5 rounded text-xs bg-red-100 text-red-800">Outcomes</span>
+                                </div>
+                                <div class="flex items-start gap-2 mb-2">
+                                    <span class="text-base">⚠️</span>
+                                    <p class="text-sm text-amber-700">Card add rate dropped to 49% impacting activation targets. Tech investigating session bug.</p>
+                                </div>
+                                <div class="text-xs text-gray-600 space-y-1 mt-2">
+                                    <div class="flex items-start gap-1.5">
+                                        <input type="checkbox" class="mt-0.5 w-3 h-3 text-blue-600 rounded" disabled>
+                                        <span>Fix session bug in production</span>
+                                    </div>
+                                    <div class="flex items-start gap-1.5">
+                                        <input type="checkbox" class="mt-0.5 w-3 h-3 text-blue-600 rounded" disabled>
+                                        <span>Align Marketing + Client Success</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-entry pl-4 pb-4">
+                                <p class="text-xs text-gray-500 mb-2">Dec 28, 2025 - 8 days ago</p>
+                                <div class="flex gap-2 mb-2">
+                                    <span class="px-2 py-0.5 rounded text-xs bg-green-100 text-green-800">Plan</span>
+                                    <span class="px-2 py-0.5 rounded text-xs bg-green-100 text-green-800">Alignment</span>
+                                    <span class="px-2 py-0.5 rounded text-xs bg-green-100 text-green-800">Execution</span>
+                                    <span class="px-2 py-0.5 rounded text-xs bg-yellow-100 text-yellow-800">Outcomes</span>
+                                </div>
+                                <div class="flex items-start gap-2 mb-2">
+                                    <span class="text-base">😊</span>
+                                    <p class="text-sm text-green-700">Retailer list expanded to 520. Design reviews completed for homescreen.</p>
+                                </div>
+                                <div class="text-xs text-gray-600 space-y-1 mt-2">
+                                    <div class="flex items-start gap-1.5">
+                                        <input type="checkbox" checked class="mt-0.5 w-3 h-3 text-blue-600 rounded" disabled>
+                                        <span class="line-through text-gray-400">Complete design reviews</span>
+                                    </div>
+                                    <div class="flex items-start gap-1.5">
+                                        <input type="checkbox" class="mt-0.5 w-3 h-3 text-blue-600 rounded" disabled>
+                                        <span>Validate capacity with retailer count</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-entry pl-4 pb-4">
+                                <p class="text-xs text-gray-500 mb-2">Dec 20, 2025 - 16 days ago</p>
+                                <div class="flex gap-2 mb-2">
+                                    <span class="px-2 py-0.5 rounded text-xs bg-green-100 text-green-800">Plan</span>
+                                    <span class="px-2 py-0.5 rounded text-xs bg-green-100 text-green-800">Alignment</span>
+                                    <span class="px-2 py-0.5 rounded text-xs bg-green-100 text-green-800">Execution</span>
+                                    <span class="px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-800">Outcomes</span>
+                                </div>
+                                <div class="flex items-start gap-2 mb-2">
+                                    <span class="text-base">🎉</span>
+                                    <p class="text-sm text-green-700">Initial beta launch successful with 25 retailers. Early feedback very positive.</p>
+                                </div>
+                                <div class="text-xs text-gray-600 space-y-1 mt-2">
+                                    <div class="flex items-start gap-1.5">
+                                        <input type="checkbox" checked class="mt-0.5 w-3 h-3 text-blue-600 rounded" disabled>
+                                        <span class="line-through text-gray-400">Launch beta with first cohort</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Hidden older entries -->
+                            <div id="shop-timeline-older" class="hidden space-y-4">
+                                <div class="timeline-entry pl-4 pb-4">
+                                    <p class="text-xs text-gray-500 mb-2">Dec 10, 2025 - 26 days ago</p>
+                                    <div class="flex gap-2 mb-2">
+                                        <span class="px-2 py-0.5 rounded text-xs bg-green-100 text-green-800">Plan</span>
+                                        <span class="px-2 py-0.5 rounded text-xs bg-yellow-100 text-yellow-800">Alignment</span>
+                                        <span class="px-2 py-0.5 rounded text-xs bg-yellow-100 text-yellow-800">Execution</span>
+                                        <span class="px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-800">Outcomes</span>
+                                    </div>
+                                    <div class="flex items-start gap-2 mb-2">
+                                        <span class="text-base">😐</span>
+                                        <p class="text-sm text-gray-700">Planning phase complete. Moving to implementation.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="shop-load-more" onclick="loadMoreTimeline('shop')" class="w-full mt-4 px-4 py-2 text-sm text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors font-medium border border-blue-200">
+                            Load More
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Open Banking Initiative -->
+            <div class="card bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg" onclick="toggleCard('openbanking')">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900">Open Banking</h2>
+                        <p class="text-sm text-gray-500">Updated 3 days ago</p>
+                    </div>
+                    <svg id="openbanking-chevron" class="w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+                <div class="flex gap-1.5 mb-3">
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Plan</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Alignment</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Execution</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">Outcomes</span>
+                </div>
+                <div class="mb-3">
+                    <div class="flex items-start gap-2 mb-2">
+                        <span class="text-lg">😊</span>
+                        <p class="text-sm text-green-700">Integration on track for Q1 launch. Personalization engine ready for testing with 94% accuracy.</p>
+                    </div>
+                    <div class="text-xs text-gray-600 space-y-1">
+                        <div class="flex items-start gap-1.5">
+                            <input type="checkbox" class="mt-0.5 w-3 h-3 text-blue-600 rounded" disabled>
+                            <span>Legal sign-off on data policies</span>
+                        </div>
+                        <div class="flex items-start gap-1.5">
+                            <input type="checkbox" class="mt-0.5 w-3 h-3 text-blue-600 rounded" disabled>
+                            <span>Plan member communication strategy</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="openbanking-expanded" class="hidden mt-6 pt-6 border-t border-gray-200">
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Confidence Breakdown</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🎯 Plan Creation</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">Excellent</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🤝 Alignment to Plan</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">Good</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🚀 Execution of Plan</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">Good</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">📊 Performance vs Outcomes</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800">N/A</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Current State</h3>
+                        <div class="space-y-3 text-sm">
+                            <div>
+                                <p class="font-medium text-gray-700">What's Changed:</p>
+                                <p class="text-gray-600 mt-1">API integration completed ahead of schedule. Initial testing shows strong transaction matching accuracy (94%). Data team has personalization models ready for beta.</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-700">What Needs to Happen This Week:</p>
+                                <p class="text-gray-600 mt-1">1) Legal sign-off on data policies 2) Plan member communication strategy with Marketing 3) Select beta cohort (targeting 500 power users)</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-700">Next Milestone:</p>
+                                <p class="text-gray-600 mt-1">Beta launch to 500 users - <span class="font-medium">February 1, 2026</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Department Alignment Status</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Product</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Tech/Engineering</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Marketing</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Client Success</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Commercial</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button onclick="showUpdateForm('openbanking')" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Add Update
+                    </button>
+                </div>
+            </div>
+
+            <!-- Engage Layer Initiative -->
+            <div class="card bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg" onclick="toggleCard('engage')">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900">Engage Layer</h2>
+                        <p class="text-sm text-gray-500">Updated 5 days ago</p>
+                    </div>
+                    <svg id="engage-chevron" class="w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+                <div class="flex gap-1.5 mb-3">
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Plan</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">Alignment</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">Execution</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">Outcomes</span>
+                </div>
+                <p class="text-sm text-gray-700 mb-3">Gamification mechanics in early design phase. Scope still being defined.</p>
+                <div class="flex items-start gap-2">
+                    <span class="text-red-600 text-sm font-medium">⚠️</span>
+                    <p class="text-sm text-red-600">No clear owner assigned. Dependencies on Shop unclear.</p>
+                </div>
+                
+                <div id="engage-expanded" class="hidden mt-6 pt-6 border-t border-gray-200">
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Confidence Breakdown</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🎯 Plan Creation</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Medium</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🤝 Alignment to Plan</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-800">Poor</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🚀 Execution of Plan</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-800">Poor</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">📊 Performance vs Outcomes</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800">N/A</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Current State</h3>
+                        <div class="space-y-3 text-sm">
+                            <div>
+                                <p class="font-medium text-gray-700">What's Changed:</p>
+                                <p class="text-gray-600 mt-1">Initial concept work completed by design. Concerns raised in SLT about scope creep and whether this should be part of Shop or separate initiative. No technical scoping yet.</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-700">What Needs to Happen This Week:</p>
+                                <p class="text-gray-600 mt-1">1) Decide if this rolls into Shop or stays separate 2) Assign clear owner 3) Schedule alignment session with Product + Tech to scope properly</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-700">Next Milestone:</p>
+                                <p class="text-gray-600 mt-1">Scope definition and owner assignment - <span class="font-medium">January 20, 2026</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Department Alignment Status</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Product</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Tech/Engineering</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Marketing</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Client Success</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Commercial</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button onclick="showUpdateForm('engage')" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Add Update
+                    </button>
+                </div>
+            </div>
+
+            <!-- ACE Initiative -->
+            <div class="card bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg" onclick="toggleCard('ace')">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900">ACE (AI/ML Platform)</h2>
+                        <p class="text-sm text-gray-500">Updated 2 days ago</p>
+                    </div>
+                    <svg id="ace-chevron" class="w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+                <div class="flex gap-1.5 mb-3">
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Plan</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Alignment</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Execution</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Outcomes</span>
+                </div>
+                <p class="text-sm text-gray-700 mb-3">Recommendation engine showing strong early results. Infrastructure scaling well.</p>
+                <div class="flex items-start gap-2">
+                    <span class="text-amber-600 text-sm font-medium">⚠️</span>
+                    <p class="text-sm text-amber-600">Data quality issues in training set affecting accuracy for edge cases</p>
+                </div>
+                
+                <div id="ace-expanded" class="hidden mt-6 pt-6 border-t border-gray-200">
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Confidence Breakdown</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🎯 Plan Creation</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">Good</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🤝 Alignment to Plan</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">Good</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🚀 Execution of Plan</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">Good</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">📊 Performance vs Outcomes</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Medium</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Current State</h3>
+                        <div class="space-y-3 text-sm">
+                            <div>
+                                <p class="font-medium text-gray-700">What's Changed:</p>
+                                <p class="text-gray-600 mt-1">Recommendation accuracy at 78% for main use cases. Infrastructure handling 10k requests/day smoothly. Data team identified quality issues in edge case training data that need cleanup.</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-700">What Needs to Happen This Week:</p>
+                                <p class="text-gray-600 mt-1">1) Data cleanup sprint for edge cases 2) Integrate with Shop homescreen API 3) Define rollout strategy with Product for gradual member exposure</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-700">Next Milestone:</p>
+                                <p class="text-gray-600 mt-1">Production integration with Shop - <span class="font-medium">February 15, 2026</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Department Alignment Status</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Product</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Tech/Engineering</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Marketing</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Client Success</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Commercial</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button onclick="showUpdateForm('ace')" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Add Update
+                    </button>
+                </div>
+            </div>
+
+            <!-- Engage to Activate Initiative -->
+            <div class="card bg-white rounded-lg shadow-md p-6 cursor-pointer hover:shadow-lg" onclick="toggleCard('e2a')">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-900">Engage to Activate</h2>
+                        <p class="text-sm text-gray-500">Updated 4 days ago</p>
+                    </div>
+                    <svg id="e2a-chevron" class="w-5 h-5 text-gray-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+                <div class="flex gap-1.5 mb-3">
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Plan</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Alignment</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Execution</span>
+                    <span class="px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Outcomes</span>
+                </div>
+                <p class="text-sm text-gray-700 mb-3">Core functionality complete. Scaling to 500 retailers with 50% CLO adoption target.</p>
+                <div class="flex items-start gap-2">
+                    <span class="text-amber-600 text-sm font-medium">⚠️</span>
+                    <p class="text-sm text-amber-600">Retailer adoption slower than expected - only at 35% CLO penetration</p>
+                </div>
+                
+                <div id="e2a-expanded" class="hidden mt-6 pt-6 border-t border-gray-200">
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Confidence Breakdown</h3>
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🎯 Plan Creation</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">Good</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🤝 Alignment to Plan</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">Good</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">🚀 Execution of Plan</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Medium</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-700">📊 Performance vs Outcomes</span>
+                                <span class="px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800">Medium</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Current State</h3>
+                        <div class="space-y-3 text-sm">
+                            <div>
+                                <p class="font-medium text-gray-700">What's Changed:</p>
+                                <p class="text-gray-600 mt-1">Core engagement flow working well with initial cohort. However, retailer CLO adoption tracking at 35% vs 50% target. Commercial team investigating why some retailers hesitant to enable CLO alongside E2A.</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-700">What Needs to Happen This Week:</p>
+                                <p class="text-gray-600 mt-1">1) Commercial to identify barriers in CLO adoption 2) Review value prop messaging with Marketing 3) Assess if 50% target is realistic or needs adjustment</p>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-700">Next Milestone:</p>
+                                <p class="text-gray-600 mt-1">500 retailers live with 50% CLO - <span class="font-medium">March 31, 2026</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h3 class="text-sm font-semibold text-gray-900 mb-3">Department Alignment Status</h3>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Product</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Tech/Engineering</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Marketing</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Client Success</span>
+                            </label>
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded">
+                                <span class="text-sm text-gray-700">Commercial</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button onclick="showUpdateForm('e2a')" class="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                        Add Update
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        function toggleCard(cardId) {
+            const expanded = document.getElementById(`${cardId}-expanded`);
+            const chevron = document.getElementById(`${cardId}-chevron`);
+
+            if (expanded.classList.contains('hidden')) {
+                expanded.classList.remove('hidden');
+                chevron.style.transform = 'rotate(180deg)';
+            } else {
+                expanded.classList.add('hidden');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        function addTaskInline(initiativeId) {
+            const taskList = document.getElementById(`${initiativeId}-task-list`);
+            const newTask = document.createElement('div');
+            newTask.className = 'flex gap-2 items-start';
+            newTask.innerHTML = `
+                <input type="checkbox" class="mt-1.5 w-4 h-4 text-blue-600 rounded" onchange="toggleTaskStrikethrough(this)">
+                <input type="text" class="flex-1 px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="Enter task...">
+                <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 text-lg">✕</button>
+            `;
+            taskList.appendChild(newTask);
+        }
+
+        function addMilestoneInline(initiativeId) {
+            const milestoneList = document.getElementById(`${initiativeId}-milestone-list`);
+            const newMilestone = document.createElement('div');
+            newMilestone.className = 'flex gap-2 items-start';
+            newMilestone.innerHTML = `
+                <input type="text" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm" placeholder="Milestone name...">
+                <input type="date" class="w-40 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                <button type="button" onclick="this.parentElement.remove()" class="text-red-500 hover:text-red-700 text-lg">✕</button>
+            `;
+            milestoneList.appendChild(newMilestone);
+        }
+
+        function saveUpdate(initiativeId) {
+            // In real app, this would save to database and add to timeline
+            alert('Changes saved! (This is a demo - no actual data saved)');
+            // Would update the collapsed card summary and add entry to timeline
+        }
+
+        function toggleTaskStrikethrough(checkbox) {
+            const taskText = checkbox.nextElementSibling;
+            if (checkbox.checked) {
+                if (taskText.tagName === 'SPAN') {
+                    taskText.classList.add('line-through', 'text-gray-400');
+                } else if (taskText.tagName === 'INPUT') {
+                    taskText.classList.add('line-through', 'text-gray-400');
+                    taskText.disabled = true;
+                }
+            } else {
+                if (taskText.tagName === 'SPAN') {
+                    taskText.classList.remove('line-through', 'text-gray-400');
+                } else if (taskText.tagName === 'INPUT') {
+                    taskText.classList.remove('line-through', 'text-gray-400');
+                    taskText.disabled = false;
+                }
+            }
+        }
+
+        function loadMoreTimeline(initiativeId) {
+            const olderEntries = document.getElementById(`${initiativeId}-timeline-older`);
+            const loadMoreBtn = document.getElementById(`${initiativeId}-load-more`);
+
+            if (olderEntries.classList.contains('hidden')) {
+                olderEntries.classList.remove('hidden');
+                loadMoreBtn.textContent = 'Show Less';
+            } else {
+                olderEntries.classList.add('hidden');
+                loadMoreBtn.textContent = 'Load More';
+            }
+        }
+
+        // Add emoji selection highlighting for inline forms
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set up emoji selectors for each initiative
+            document.querySelectorAll('input[type="radio"][name$="-status-emoji"]').forEach(radio => {
+                const groupName = radio.name;
+                radio.parentElement.addEventListener('click', function() {
+                    document.querySelectorAll(`input[name="${groupName}"]`).forEach(r => {
+                        r.parentElement.style.opacity = '0.5';
+                    });
+                    this.style.opacity = '1';
+                    radio.checked = true;
+                });
+            });
+        });
+
+        // Prevent checkboxes from collapsing cards
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+
+                // Add strikethrough toggle for task checkboxes in expanded view
+                if (checkbox.nextElementSibling && checkbox.nextElementSibling.tagName === 'SPAN') {
+                    checkbox.addEventListener('change', function() {
+                        const taskText = this.nextElementSibling;
+                        if (this.checked) {
+                            taskText.classList.add('line-through', 'text-gray-400');
+                        } else {
+                            taskText.classList.remove('line-through', 'text-gray-400');
+                        }
+                    });
+                }
+            });
+
+            // Prevent labels from collapsing cards
+            document.querySelectorAll('label').forEach(label => {
+                label.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+
+            // Prevent buttons from collapsing cards
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+
+            // Prevent select dropdowns from collapsing cards
+            document.querySelectorAll('select').forEach(select => {
+                select.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                select.addEventListener('change', function(e) {
+                    e.stopPropagation();
+                });
+            });
+
+            // Prevent text inputs and textareas from collapsing cards
+            document.querySelectorAll('input[type="text"], input[type="date"], textarea').forEach(input => {
+                input.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+                input.addEventListener('focus', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        });
+    </script>
+</body>
+</html>
