@@ -24,9 +24,9 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
   const [saving, setSaving] = useState(false)
 
   // Form state
-  const [confidencePlan, setConfidencePlan] = useState<ConfidenceLevel>('medium')
-  const [confidenceAlignment, setConfidenceAlignment] = useState<ConfidenceLevel>('medium')
-  const [confidenceExecution, setConfidenceExecution] = useState<ConfidenceLevel>('medium')
+  const [confidencePlan, setConfidencePlan] = useState<ConfidenceLevel>('started')
+  const [confidenceAlignment, setConfidenceAlignment] = useState<ConfidenceLevel>('started')
+  const [confidenceExecution, setConfidenceExecution] = useState<ConfidenceLevel>('started')
   const [confidenceOutcomes, setConfidenceOutcomes] = useState<ConfidenceOutcome>('na')
   const [statusMood, setStatusMood] = useState<StatusMood>('neutral')
   const [latestStatus, setLatestStatus] = useState('')
@@ -50,9 +50,9 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
   // Pre-populate form with latest update data
   useEffect(() => {
     if (latestUpdate) {
-      setConfidencePlan(latestUpdate.confidence_plan || 'medium')
-      setConfidenceAlignment(latestUpdate.confidence_alignment || 'medium')
-      setConfidenceExecution(latestUpdate.confidence_execution || 'medium')
+      setConfidencePlan(latestUpdate.confidence_plan || 'started')
+      setConfidenceAlignment(latestUpdate.confidence_alignment || 'started')
+      setConfidenceExecution(latestUpdate.confidence_execution || 'started')
       setConfidenceOutcomes(latestUpdate.confidence_outcomes || 'na')
       setStatusMood(latestUpdate.status_mood || 'neutral')
       setLatestStatus(latestUpdate.latest_status || '')
@@ -262,9 +262,9 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
   }
 
   function resetForm() {
-    setConfidencePlan('medium')
-    setConfidenceAlignment('medium')
-    setConfidenceExecution('medium')
+    setConfidencePlan('started')
+    setConfidenceAlignment('started')
+    setConfidenceExecution('started')
     setConfidenceOutcomes('na')
     setStatusMood('neutral')
     setLatestStatus('')
@@ -376,7 +376,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-base font-medium"
                 >
                   <option value="poor">Poor</option>
-                  <option value="medium">Medium</option>
+                  <option value="started">Started</option>
                   <option value="good">Good</option>
                   <option value="excellent">Excellent</option>
                   <option value="na">N/A</option>
@@ -393,7 +393,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-base font-medium"
                 >
                   <option value="poor">Poor</option>
-                  <option value="medium">Medium</option>
+                  <option value="started">Started</option>
                   <option value="good">Good</option>
                   <option value="excellent">Excellent</option>
                   <option value="na">N/A</option>
@@ -410,7 +410,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-base font-medium"
                 >
                   <option value="poor">Poor</option>
-                  <option value="medium">Medium</option>
+                  <option value="started">Started</option>
                   <option value="good">Good</option>
                   <option value="excellent">Excellent</option>
                   <option value="na">N/A</option>
@@ -427,7 +427,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                   className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 text-base font-medium"
                 >
                   <option value="poor">Poor</option>
-                  <option value="medium">Medium</option>
+                  <option value="started">Started</option>
                   <option value="good">Good</option>
                   <option value="excellent">Excellent</option>
                   <option value="na">N/A</option>

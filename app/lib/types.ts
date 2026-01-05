@@ -1,4 +1,4 @@
-export type ConfidenceLevel = 'poor' | 'medium' | 'good' | 'excellent' | 'na'
+export type ConfidenceLevel = 'poor' | 'started' | 'good' | 'excellent' | 'na'
 export type ConfidenceOutcome = ConfidenceLevel
 export type StatusMood = 'great' | 'good' | 'neutral' | 'concerned' | 'warning'
 

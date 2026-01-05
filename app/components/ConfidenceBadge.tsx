@@ -13,7 +13,8 @@ export default function ConfidenceBadge({ label, level, compact = false }: Confi
         return 'bg-emerald-500 text-white shadow-sm'
       case 'good':
         return 'bg-green-500 text-white shadow-sm'
-      case 'medium':
+      case 'started':
+      case 'medium': // Handle legacy data
         return 'bg-amber-500 text-white shadow-sm'
       case 'poor':
         return 'bg-red-500 text-white shadow-sm'
