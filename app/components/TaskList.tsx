@@ -27,8 +27,15 @@ export default function TaskList({ tasks, onTasksChange, editable = false }: Tas
       task_text: '',
       is_completed: false,
       display_order: tasks.length,
+      due_date: null,
     }
     onTasksChange([...tasks, newTask])
+  }
+
+  const handleDateChange = (index: number, date: string) => {
+    const newTasks = [...tasks]
+    newTasks[index].due_date = date
+    onTasksChange(newTasks)
   }
 
   const handleRemoveTask = (index: number) => {
@@ -50,30 +57,50 @@ export default function TaskList({ tasks, onTasksChange, editable = false }: Tas
             className="mt-1.5 w-4 h-4 text-blue-600 rounded cursor-pointer"
             disabled={!editable}
           />
-          {editable ? (
-            <input
-              type="text"
-              value={task.task_text}
-              onChange={(e) => {
-                e.stopPropagation()
-                handleTaskTextChange(index, e.target.value)
-              }}
-              onClick={(e) => e.stopPropagation()}
-              placeholder="Enter task..."
-              disabled={task.is_completed}
-              className={`flex-1 px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm ${
-                task.is_completed ? 'line-through text-gray-400 bg-gray-50' : ''
-              }`}
-            />
-          ) : (
-            <span
-              className={`flex-1 text-sm ${
-                task.is_completed ? 'line-through text-gray-400' : 'text-gray-700'
-              }`}
-            >
-              {task.task_text}
-            </span>
-          )}
+          <div className="flex-1 space-y-1">
+            {editable ? (
+              <input
+                type="text"
+                value={task.task_text}
+                onChange={(e) => {
+                  e.stopPropagation()
+                  handleTaskTextChange(index, e.target.value)
+                }}
+                onClick={(e) => e.stopPropagation()}
+                placeholder="Enter task..."
+                disabled={task.is_completed}
+                className={`w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm ${
+                  task.is_completed ? 'line-through text-gray-400 bg-gray-50' : ''
+                }`}
+              />
+            ) : (
+              <span
+                className={`block text-sm ${
+                  task.is_completed ? 'line-through text-gray-400' : 'text-gray-700'
+                }`}
+              >
+                {task.task_text}
+              </span>
+            )}
+            {editable && (
+              <input
+                type="date"
+                value={task.due_date || ''}
+                onChange={(e) => {
+                  e.stopPropagation()
+                  handleDateChange(index, e.target.value)
+                }}
+                onClick={(e) => e.stopPropagation()}
+                disabled={task.is_completed}
+                className="w-full px-2 py-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              />
+            )}
+            {!editable && task.due_date && (
+              <span className="text-xs text-gray-500">
+                Due: {new Date(task.due_date).toLocaleDateString()}
+              </span>
+            )}
+          </div>
           {editable && (
             <button
               type="button"

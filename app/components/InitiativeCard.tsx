@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Initiative, Update, Task, ConfidenceLevel, ConfidenceOutcome, StatusMood } from '@/lib/types'
 import { createClient } from '@/lib/supabase'
 import { formatDistanceToNow } from 'date-fns'
+import { formatWorkingDaysUntil } from '@/lib/utils'
 import ConfidenceBadge from './ConfidenceBadge'
 import EmojiSelector, { getMoodEmoji, getMoodColor } from './EmojiSelector'
 import TaskList from './TaskList'
@@ -164,6 +165,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
           task_text: task.task_text,
           is_completed: task.is_completed,
           display_order: index,
+          due_date: task.due_date,
         }))
 
         await supabase.from('tasks').insert(tasksToInsert)
@@ -238,6 +240,25 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
               <ConfidenceBadge label="Execution" level={latestUpdate.confidence_execution} compact />
               <ConfidenceBadge label="Outcomes" level={latestUpdate.confidence_outcomes} compact />
             </div>
+
+            {/* Nearest Task Deadline */}
+            {(() => {
+              const upcomingTasks = openTasks.filter(t => !t.is_completed && t.due_date)
+              if (upcomingTasks.length > 0) {
+                const sortedTasks = upcomingTasks.sort((a, b) =>
+                  new Date(a.due_date!).getTime() - new Date(b.due_date!).getTime()
+                )
+                const nearestTask = sortedTasks[0]
+                const daysText = formatWorkingDaysUntil(nearestTask.due_date)
+
+                return (
+                  <div className="mb-4 text-sm font-medium text-gray-700">
+                    📅 Next deadline: <span className="text-pink-600">{daysText}</span>
+                  </div>
+                )
+              }
+              return null
+            })()}
 
             {/* Latest Status */}
             {latestUpdate.latest_status && (
@@ -320,7 +341,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
               </div>
               <div>
                 <label className="block text-sm font-bold text-gray-900 mb-2">
-                  Performance vs Outcomes
+                  Outcomes
                 </label>
                 <select
                   value={confidenceOutcomes}

@@ -33,6 +33,7 @@ export interface Task {
   task_text: string
   is_completed: boolean
   display_order: number
+  due_date: string | null
 }
 
 export interface InitiativeWithLatestUpdate extends Initiative {
