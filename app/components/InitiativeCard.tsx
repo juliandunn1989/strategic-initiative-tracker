@@ -494,7 +494,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
               <button
                 onClick={handleSaveNew}
                 disabled={saving}
-                className="flex-1 text-white py-4 px-6 rounded-xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-bold transition-all duration-200 text-lg"
+                className="flex-1 text-white py-2.5 px-4 rounded-lg hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-200 text-sm"
                 style={{
                   background: saving ? '#DDDDDD' : 'linear-gradient(to right, #E61E4D 0%, #E31C5F 50%, #D70466 100%)',
                   boxShadow: saving ? 'none' : '0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1)'
@@ -506,7 +506,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                 <button
                   onClick={handleEditCurrent}
                   disabled={saving}
-                  className="flex-1 bg-gray-600 text-white py-4 px-6 rounded-xl hover:bg-gray-700 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-bold transition-all duration-200 text-lg"
+                  className="flex-1 bg-gray-600 text-white py-2.5 px-4 rounded-lg hover:bg-gray-700 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-200 text-sm"
                   style={{
                     boxShadow: saving ? 'none' : '0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1)'
                   }}
@@ -515,11 +515,6 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                 </button>
               )}
             </div>
-            {latestUpdate && (
-              <p className="text-xs text-gray-500 mt-2 text-center">
-                Use "Edit Current" to fix typos or "Save New Update" to create a new entry
-              </p>
-            )}
           </div>
 
           {/* Timeline */}
