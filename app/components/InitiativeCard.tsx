@@ -379,6 +379,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                   <option value="medium">Medium</option>
                   <option value="good">Good</option>
                   <option value="excellent">Excellent</option>
+                  <option value="na">N/A</option>
                 </select>
               </div>
               <div>
@@ -395,6 +396,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                   <option value="medium">Medium</option>
                   <option value="good">Good</option>
                   <option value="excellent">Excellent</option>
+                  <option value="na">N/A</option>
                 </select>
               </div>
               <div>
@@ -411,6 +413,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                   <option value="medium">Medium</option>
                   <option value="good">Good</option>
                   <option value="excellent">Excellent</option>
+                  <option value="na">N/A</option>
                 </select>
               </div>
               <div>

@@ -1,5 +1,5 @@
-export type ConfidenceLevel = 'poor' | 'medium' | 'good' | 'excellent'
-export type ConfidenceOutcome = ConfidenceLevel | 'na'
+export type ConfidenceLevel = 'poor' | 'medium' | 'good' | 'excellent' | 'na'
+export type ConfidenceOutcome = ConfidenceLevel
 export type StatusMood = 'great' | 'good' | 'neutral' | 'concerned' | 'warning'
 
 export interface Initiative {
@@ -16,7 +16,7 @@ export interface Update {
   confidence_plan: ConfidenceLevel | null
   confidence_alignment: ConfidenceLevel | null
   confidence_execution: ConfidenceLevel | null
-  confidence_outcomes: ConfidenceOutcome | null
+  confidence_outcomes: ConfidenceLevel | null
   status_mood: StatusMood | null
   latest_status: string | null
   biggest_risk_worry: string | null
