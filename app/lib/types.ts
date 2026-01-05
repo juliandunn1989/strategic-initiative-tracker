@@ -35,16 +35,7 @@ export interface Task {
   display_order: number
 }
 
-export interface Milestone {
-  id: string
-  update_id: string
-  milestone_text: string
-  target_date: string | null
-  display_order: number
-}
-
 export interface InitiativeWithLatestUpdate extends Initiative {
   latest_update?: Update
   open_tasks?: Task[]
-  upcoming_milestones?: Milestone[]
 }

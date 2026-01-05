@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import { Initiative } from '@/lib/types'
+import InitiativeCard from '@/components/InitiativeCard'
 
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null)
@@ -57,19 +58,20 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Strategic Initiatives</h1>
+        <div className="flex justify-between items-center mb-10">
+          <div>
+            <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-2">Strategic Initiatives</h1>
+            <p className="text-base text-gray-600">Welcome back, {user?.email}</p>
+          </div>
           <button
             onClick={handleLogout}
-            className="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100"
+            className="px-6 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-100 border border-gray-300 rounded-lg transition-all duration-200"
           >
             Logout
           </button>
         </div>
-
-        <p className="text-gray-600 mb-6">Welcome, {user?.email}</p>
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {initiatives.length === 0 ? (
@@ -79,15 +81,11 @@ export default function DashboardPage() {
             </div>
           ) : (
             initiatives.map((initiative) => (
-              <div
+              <InitiativeCard
                 key={initiative.id}
-                className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow cursor-pointer"
-              >
-                <h2 className="text-xl font-semibold mb-2">{initiative.name}</h2>
-                <p className="text-sm text-gray-500">
-                  Created: {new Date(initiative.created_at).toLocaleDateString()}
-                </p>
-              </div>
+                initiative={initiative}
+                onUpdate={fetchInitiatives}
+              />
             ))
           )}
         </div>
