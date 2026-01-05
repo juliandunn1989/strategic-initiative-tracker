@@ -166,7 +166,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
           task_text: task.task_text,
           is_completed: task.is_completed,
           display_order: index,
-          due_date: task.due_date,
+          due_date: task.due_date || null,
         }))
 
         const { error: tasksError } = await supabase.from('tasks').insert(tasksToInsert)
@@ -235,15 +235,17 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
           task_text: task.task_text,
           is_completed: task.is_completed,
           display_order: index,
-          due_date: task.due_date,
+          due_date: task.due_date || null,
         }))
 
         console.log('Edit Current - Tasks to insert:', tasksToInsert)
-        const { error: tasksError } = await supabase.from('tasks').insert(tasksToInsert)
+        const { error: tasksError, data: insertedTasks } = await supabase.from('tasks').insert(tasksToInsert).select()
         if (tasksError) {
           console.error('Error inserting tasks:', tasksError)
+          console.error('Failed tasks data:', tasksToInsert)
           throw tasksError
         }
+        console.log('Edit Current - Successfully inserted:', insertedTasks)
       }
 
       // Refresh data
