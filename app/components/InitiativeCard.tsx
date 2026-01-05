@@ -199,6 +199,8 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
     setSaving(true)
 
     try {
+      console.log('Edit Current - Tasks before save:', tasks)
+
       // Update existing update
       const { error: updateError } = await supabase
         .from('updates')
@@ -225,6 +227,8 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
 
       // Insert updated tasks (filter out empty tasks)
       const validTasks = tasks.filter(task => task.task_text.trim() !== '')
+      console.log('Edit Current - Valid tasks to insert:', validTasks)
+
       if (validTasks.length > 0) {
         const tasksToInsert = validTasks.map((task, index) => ({
           update_id: latestUpdate.id,
@@ -234,6 +238,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
           due_date: task.due_date,
         }))
 
+        console.log('Edit Current - Tasks to insert:', tasksToInsert)
         const { error: tasksError } = await supabase.from('tasks').insert(tasksToInsert)
         if (tasksError) {
           console.error('Error inserting tasks:', tasksError)
