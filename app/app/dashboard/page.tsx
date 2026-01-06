@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
 import { Initiative, Task, Update } from '@/lib/types'
 import InitiativeCard from '@/components/InitiativeCard'
+import OtherProjectsCard from '@/components/OtherProjectsCard'
 
 interface InitiativeWithDeadline extends Initiative {
   nearestDeadline: string | null
@@ -81,8 +82,12 @@ export default function DashboardPage() {
       })
     )
 
-    // Sort initiatives by deadline, then alphabetically
-    initiativesWithDeadlines.sort((a, b) => {
+    // Separate "Other Projects" from regular initiatives
+    const otherProjectsInitiative = initiativesWithDeadlines.find(i => i.name === 'Other Projects')
+    const regularInitiatives = initiativesWithDeadlines.filter(i => i.name !== 'Other Projects')
+
+    // Sort regular initiatives by deadline, then alphabetically
+    regularInitiatives.sort((a, b) => {
       // If both have deadlines, sort by date
       if (a.nearestDeadline && b.nearestDeadline) {
         const dateCompare = new Date(a.nearestDeadline).getTime() - new Date(b.nearestDeadline).getTime()
@@ -100,7 +105,12 @@ export default function DashboardPage() {
       return a.name.localeCompare(b.name)
     })
 
-    setInitiatives(initiativesWithDeadlines)
+    // Put "Other Projects" at the end if it exists
+    const sortedInitiatives = otherProjectsInitiative
+      ? [...regularInitiatives, otherProjectsInitiative]
+      : regularInitiatives
+
+    setInitiatives(sortedInitiatives)
   }
 
   async function handleLogout() {
@@ -137,15 +147,22 @@ export default function DashboardPage() {
           {initiatives.length === 0 ? (
             <div className="col-span-full bg-white rounded-lg shadow p-8 text-center">
               <p className="text-gray-500 mb-4">No initiatives found</p>
-              <p className="text-sm text-gray-400">Your 5 default initiatives should appear here</p>
+              <p className="text-sm text-gray-400">Your default initiatives should appear here</p>
             </div>
           ) : (
             initiatives.map((initiative) => (
-              <InitiativeCard
-                key={initiative.id}
-                initiative={initiative}
-                onUpdate={fetchInitiatives}
-              />
+              initiative.name === 'Other Projects' ? (
+                <OtherProjectsCard
+                  key={initiative.id}
+                  initiative={initiative}
+                />
+              ) : (
+                <InitiativeCard
+                  key={initiative.id}
+                  initiative={initiative}
+                  onUpdate={fetchInitiatives}
+                />
+              )
             ))
           )}
         </div>
