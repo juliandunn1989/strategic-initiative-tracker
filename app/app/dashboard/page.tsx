@@ -130,23 +130,16 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-10">
-          <div>
-            <h1
-              className="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-pink-600 via-pink-500 to-rose-500"
-              style={{
-                backgroundImage: 'linear-gradient(135deg, #E61E4D 0%, #E31C5F 50%, #D70466 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
-              }}
-            >
+        <div className="flex justify-between items-start mb-10">
+          <div className="flex-1">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
               High-level initiative tracker
             </h1>
             <p className="text-base text-gray-600 font-medium">Welcome back, {user?.email}</p>
           </div>
           <button
             onClick={handleLogout}
-            className="px-6 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-100 border border-gray-300 rounded-lg transition-all duration-200"
+            className="px-6 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-100 border border-gray-300 rounded-lg transition-all duration-200 flex-shrink-0"
           >
             Logout
           </button>
