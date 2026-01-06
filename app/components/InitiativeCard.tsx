@@ -340,7 +340,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                 {latestUpdate.latest_status && (
                   <div>
                     <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Summary</h4>
-                    <div className="text-base font-semibold text-gray-900 leading-relaxed">
+                    <div className="text-sm font-normal text-gray-700 leading-relaxed">
                       {latestUpdate.latest_status}
                     </div>
                   </div>
@@ -348,7 +348,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
                 {latestUpdate.biggest_risk_worry && (
                   <div>
                     <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Key Risk</h4>
-                    <div className="text-base font-semibold text-gray-900 leading-relaxed">
+                    <div className="text-sm font-normal text-gray-700 leading-relaxed">
                       {latestUpdate.biggest_risk_worry}
                     </div>
                   </div>
