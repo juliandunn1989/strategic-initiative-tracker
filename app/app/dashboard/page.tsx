@@ -132,8 +132,17 @@ export default function DashboardPage() {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-10">
           <div>
-            <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-2">Strategic Initiatives</h1>
-            <p className="text-base text-gray-600">Welcome back, {user?.email}</p>
+            <h1
+              className="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-pink-600 via-pink-500 to-rose-500"
+              style={{
+                backgroundImage: 'linear-gradient(135deg, #E61E4D 0%, #E31C5F 50%, #D70466 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              High-level initiative tracker
+            </h1>
+            <p className="text-base text-gray-600 font-medium">Welcome back, {user?.email}</p>
           </div>
           <button
             onClick={handleLogout}
