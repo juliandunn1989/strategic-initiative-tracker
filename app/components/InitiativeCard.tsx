@@ -69,7 +69,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
           .from('tasks')
           .select('*')
           .eq('update_id', latestUpdate.id)
-          .order('display_order')
+          .order('due_date', { ascending: true, nullsFirst: false })
 
         if (tasksData) {
           setTasks(tasksData)
@@ -96,7 +96,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
         .from('tasks')
         .select('*')
         .eq('update_id', updates[0].id)
-        .order('display_order')
+        .order('due_date', { ascending: true, nullsFirst: false })
 
       if (tasksData) {
         setOpenTasks(tasksData.filter(t => !t.is_completed))
@@ -120,7 +120,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
             .from('tasks')
             .select('*')
             .eq('update_id', update.id)
-            .order('display_order')
+            .order('due_date', { ascending: true, nullsFirst: false })
 
           return { ...update, tasks: tasks || [] }
         })

@@ -64,7 +64,7 @@ export default function OtherProjectsCard({ initiative }: OtherProjectsCardProps
       .from('tasks')
       .select('*')
       .eq('update_id', updateId)
-      .order('display_order')
+      .order('due_date', { ascending: true, nullsFirst: false })
 
     if (data) {
       setTasks(data)
