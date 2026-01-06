@@ -334,12 +334,25 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
               return null
             })()}
 
-            {/* Latest Status */}
-            {latestUpdate.latest_status && (
-              <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                <div className={`text-base font-semibold ${getMoodColor(latestUpdate.status_mood)}`}>
-                  {latestUpdate.latest_status}
-                </div>
+            {/* Summary and Key Risk */}
+            {(latestUpdate.latest_status || latestUpdate.biggest_risk_worry) && (
+              <div className="bg-gray-50 rounded-lg p-4 mb-4 space-y-3">
+                {latestUpdate.latest_status && (
+                  <div>
+                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">Summary</h4>
+                    <div className={`text-base font-semibold ${getMoodColor(latestUpdate.status_mood)}`}>
+                      {latestUpdate.latest_status}
+                    </div>
+                  </div>
+                )}
+                {latestUpdate.biggest_risk_worry && (
+                  <div>
+                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">Key Risk</h4>
+                    <div className="text-base font-medium text-gray-700">
+                      {latestUpdate.biggest_risk_worry}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -363,7 +376,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
         <div className="border-t border-gray-200 bg-gray-50" onClick={(e) => e.stopPropagation()}>
           {/* Confidence Selectors */}
           <div className="p-6 bg-white border-b border-gray-200">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Confidence Breakdown</h3>
+            <h3 className="text-lg font-bold text-gray-900 mb-4">Critical Statuses</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-bold text-gray-900 mb-2">
@@ -466,7 +479,7 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
 
             <div className="mb-4">
               <label className="block text-sm font-bold text-gray-900 mb-2">
-                Biggest Risk/Worry
+                Key Risk
               </label>
               <textarea
                 value={biggestRiskWorry}
