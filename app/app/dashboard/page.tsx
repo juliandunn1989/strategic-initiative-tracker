@@ -145,6 +145,46 @@ export default function DashboardPage() {
           </button>
         </div>
 
+        {/* Confidence Legend */}
+        <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6 shadow-sm">
+          <div className="flex items-center gap-2 mb-4">
+            <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h2 className="text-sm font-bold text-gray-900 uppercase tracking-wide">Confidence Breakdown Guide</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="flex gap-3">
+              <div className="flex-shrink-0 w-1.5 bg-blue-500 rounded-full"></div>
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 mb-1">Plan</h3>
+                <p className="text-xs text-gray-600 leading-relaxed">Do we have a strong plan for the initiative?</p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <div className="flex-shrink-0 w-1.5 bg-purple-500 rounded-full"></div>
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 mb-1">Alignment</h3>
+                <p className="text-xs text-gray-600 leading-relaxed">Is the business fully aligned to that plan?</p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <div className="flex-shrink-0 w-1.5 bg-indigo-500 rounded-full"></div>
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 mb-1">Execution</h3>
+                <p className="text-xs text-gray-600 leading-relaxed">Are we executing effectively across all teams?</p>
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <div className="flex-shrink-0 w-1.5 bg-teal-500 rounded-full"></div>
+              <div>
+                <h3 className="text-sm font-semibold text-gray-900 mb-1">Outcomes</h3>
+                <p className="text-xs text-gray-600 leading-relaxed">Is the execution delivering the required outcomes?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {initiatives.length === 0 ? (
             <div className="col-span-full bg-white rounded-lg shadow p-8 text-center">
