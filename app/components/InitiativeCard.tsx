@@ -336,19 +336,19 @@ export default function InitiativeCard({ initiative, onUpdate }: InitiativeCardP
 
             {/* Summary and Key Risk */}
             {(latestUpdate.latest_status || latestUpdate.biggest_risk_worry) && (
-              <div className="bg-gray-50 rounded-lg p-4 mb-4 space-y-3">
+              <div className="bg-gray-50 rounded-lg p-5 mb-4 space-y-5">
                 {latestUpdate.latest_status && (
                   <div>
-                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">Summary</h4>
-                    <div className={`text-base font-semibold ${getMoodColor(latestUpdate.status_mood)}`}>
+                    <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Summary</h4>
+                    <div className="text-base font-semibold text-gray-900 leading-relaxed">
                       {latestUpdate.latest_status}
                     </div>
                   </div>
                 )}
                 {latestUpdate.biggest_risk_worry && (
                   <div>
-                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1.5">Key Risk</h4>
-                    <div className="text-base font-medium text-gray-700">
+                    <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Key Risk</h4>
+                    <div className="text-base font-semibold text-gray-900 leading-relaxed">
                       {latestUpdate.biggest_risk_worry}
                     </div>
                   </div>
